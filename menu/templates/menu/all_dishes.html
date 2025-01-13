@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcha Dishlar</title>
-</head>
-<body>
-    <h1>Barcha Dishlar</h1>
-    <ul>
-        {% for dish in dishes %}
-            <li>
-                <a href="{% url 'dish_detail' dish.id %}">{{ dish.name }}</a> - {{ dish.price }} so'm
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+<h1>Barcha dishlar</h1>
+<ul>
+    {% for dish in dishes %}
+    <li>
+        {{ dish.name }} - {{ dish.price }}
+        {% if can_change_dish %}
+            <a href="{% url 'edit_dish' dish.id %}">Tahrirlash</a>
+        {% endif %}
+        {% if can_delete_dish %}
+            <a href="{% url 'delete_dish' dish.id %}">O'chirish</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% if request.user.has_perm 'menu.add_dish' %}
+    <a href="{% url 'add_dish' %}">Dish qo'shish</a>
+{% endif %}
