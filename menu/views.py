@@ -1,36 +1,79 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from .models import Category, Dish
+from .forms import CategoryForm, DishForm
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
-from .models import Dish, Comment
-from .forms import CommentForm
-from django.contrib.auth import login, authenticate
 
+
+def home(request):
+    return render(request, 'menu/home.html')
+
+def all_dishes(request):
+    dishes = Dish.objects.all()
+    return render(request, 'menu/all_dishes.html', {'dishes': dishes})
 
 def dish_detail(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
-    comments = dish.comments.all()
+    return render(request, 'menu/dish_detail.html', {'dish': dish})
+
+def category_dishes(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    dishes = category.dishes.all()
+    return render(request, 'menu/category_dishes.html', {'category': category, 'dishes': dishes})
+
+def add_category(request):
     if request.method == 'POST':
-        if not request.user.is_authenticated:
-            messages.error(request, "You need to login to comment.")
-            return redirect('login')
-        form = CommentForm(request.POST)
+        form = CategoryForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.dish = dish
-            comment.save()
-            messages.success(request, "Comment added successfully!")
-            return redirect('dish_detail', dish_id=dish.id)
-        else:
-            messages.error(request, "Error in adding comment.")
+            form.save()
+            messages.success(request, "Category qo'shildi!")
+            return redirect('all_dishes')
     else:
-        form = CommentForm()
-    return render(request, 'dish_detail.html', {'dish': dish, 'comments': comments, 'form': form})
+        form = CategoryForm()
+    return render(request, 'menu/add_category.html', {'form': form})
 
+def add_dish(request):
+    if request.method == 'POST':
+        form = DishForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dish qo'shildi!")
+            return redirect('all_dishes')
+    else:
+        form = DishForm()
+    return render(request, 'menu/add_dish.html', {'form': form})
 
-from django.shortcuts import render
-from .models import Dish
+def edit_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Category yangilandi!")
+            return redirect('all_dishes')
+    else:
+        form = CategoryForm(instance=category)
+    return render(request, 'menu/edit_category.html', {'form': form})
 
-def list_dishes(request):
-    dishes = Dish.objects.all()
-    return render(request, 'list_dishes.html', {'dishes': dishes})
+def edit_dish(request, dish_id):
+    dish = get_object_or_404(Dish, id=dish_id)
+    if request.method == 'POST':
+        form = DishForm(request.POST, instance=dish)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dish yangilandi!")
+            return redirect('all_dishes')
+    else:
+        form = DishForm(instance=dish)
+    return render(request, 'menu/edit_dish.html', {'form': form})
+
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.delete()
+    messages.success(request, "Category o'chirildi!")
+    return redirect('all_dishes')
+
+def delete_dish(request, dish_id):
+    dish = get_object_or_404(Dish, id=dish_id)
+    dish.delete()
+    messages.success(request, "Dish o'chirildi!")
+    return redirect('all_dishes')
