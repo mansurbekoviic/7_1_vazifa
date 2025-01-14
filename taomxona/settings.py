@@ -132,3 +132,4 @@ EMAIL_HOST_PASSWORD = 'Muhammadali571'
 
 LOGIN_REDIRECT_URL = '/dishes/'  
 LOGOUT_REDIRECT_URL = '/accounts/login/'  
+AUTH_USER_MODEL = 'menu.CustomUser'
