@@ -15,6 +15,8 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 import random
+from django.views.generic import ListView, DetailView
+from .models import Dish, Category
 
 def register(request):
     if request.method == 'POST':
@@ -103,9 +105,6 @@ def search_dishes(request):
     dishes = Dish.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
     return render(request, 'search_results.html', {'dishes': dishes, 'query': query})
 
-
-from django.views.generic import ListView, DetailView
-from .models import Dish, Category
 
 class DishListView(ListView):
     model = Dish

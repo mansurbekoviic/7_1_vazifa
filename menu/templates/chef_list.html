@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Barcha Cheflar{% endblock %}
+
+{% block content %}
+<h1>Cheflar</h1>
+
+<ul>
+    {% for chef in chefs %}
+        <li>{{ chef.name }}</li>
+        <ul>
+            <h3>Ovqatlar:</h3>
+            {% for dish in chef.dishes.all %}
+                <li>{{ dish.name }} - {{ dish.price }} so'm</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+{% endblock %}

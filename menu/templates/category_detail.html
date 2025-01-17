@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+
+<h2>Shu kategoriyaga tegishli ovqatlar:</h2>
+<ul>
+    {% for dish in category.dishes.all %}
+        <li>{{ dish.name }} - {{ dish.price }} so'm</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     DishListView, DishDetailView, DishCreateView, DishUpdateView, DishDeleteView,
     CategoryListView, CategoryDetailView, CategoryCreateView, CategoryUpdateView, CategoryDeleteView,
-    RegisterView, LoginView, HomeView
+    RegisterView, LoginView, HomeView, ChefListView
 )
 from django.conf import settings
 from django.urls import include
@@ -10,6 +10,8 @@ from django.urls import include
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('chefs/', ChefListView.as_view(), name='chef_list'),
+    path('category/<int:pk>/', CategoryDetailView.as_view(), name='category_detail'),
     path('dishes/', DishListView.as_view(), name='dish_list'),
     path('dishes/<int:pk>/', DishDetailView.as_view(), name='dish_detail'),
     path('dishes/create/', DishCreateView.as_view(), name='dish_create'),
