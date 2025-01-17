@@ -14,7 +14,7 @@ from django.views import View
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
-
+import random
 
 def register(request):
     if request.method == 'POST':
@@ -196,3 +196,16 @@ class LoginView(View):
             login(request, user)
             return redirect('profile_view')
         return render(request, 'login.html', {'form': form})
+
+
+class HomeView(View):
+    def get(self, request):
+        categories = Category.objects.all()
+        products = list(Dish.objects.all())
+        random_products = random.sample(products, min(len(products), 8))  
+
+        context = {
+            'categories': categories,
+            'random_products': random_products,
+        }
+        return render(request, 'home.html', context)

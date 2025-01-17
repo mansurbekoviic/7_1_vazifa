@@ -2,13 +2,14 @@ from django.urls import path
 from .views import (
     DishListView, DishDetailView, DishCreateView, DishUpdateView, DishDeleteView,
     CategoryListView, CategoryDetailView, CategoryCreateView, CategoryUpdateView, CategoryDeleteView,
-    RegisterView, LoginView
+    RegisterView, LoginView, HomeView
 )
 from django.conf import settings
 from django.urls import include
 
 
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('dishes/', DishListView.as_view(), name='dish_list'),
     path('dishes/<int:pk>/', DishDetailView.as_view(), name='dish_detail'),
     path('dishes/create/', DishCreateView.as_view(), name='dish_create'),
