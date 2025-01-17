@@ -8,13 +8,13 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center">Register</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success">Register</button>
-            <a href="{% url 'login' %}" class="btn btn-link">Already have an account? Login</a>
-        </form>
+        <h1>Register</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>
+
     </div>
 </body>
 </html>
