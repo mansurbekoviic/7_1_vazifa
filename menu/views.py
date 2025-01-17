@@ -111,16 +111,24 @@ class DishListView(ListView):
     model = Dish
     template_name = 'dish_list.html'
     context_object_name = 'dishes'
+    paginate_by = 5
+   
+    def get_queryset(self):
+        return Dish.objects.select_related('category')
 
 class CategoryListView(ListView):
     model = Category
     template_name = 'category_list.html'
     context_object_name = 'categories'
+    paginate_by = 10
 
 class DishDetailView(DetailView):
     model = Dish
     template_name = 'dish_detail.html'
     context_object_name = 'dish'
+   
+    def get_queryset(self):
+        return Dish.objects.select_related('category')
 
 class CategoryDetailView(DetailView):
     model = Category

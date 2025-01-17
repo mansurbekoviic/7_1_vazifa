@@ -4,6 +4,9 @@ from .views import (
     CategoryListView, CategoryDetailView, CategoryCreateView, CategoryUpdateView, CategoryDeleteView,
     RegisterView, LoginView
 )
+from django.conf import settings
+from django.urls import include
+
 
 urlpatterns = [
     path('dishes/', DishListView.as_view(), name='dish_list'),
@@ -21,3 +24,8 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]
